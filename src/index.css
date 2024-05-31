@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply max-w-[100rem] tracking-wider mx-auto;
+}
+
+.event_p {
+  @apply font-semibold text-zinc-700 text-[0.9rem];
+}
+
+.event_input {
+  @apply px-2 border border-zinc-400 outline-none text-[0.9rem]  italic  py-2 rounded-md
+}
+
+.event_button {
+  @apply px-5 bg-black  py-2  text-white rounded-md
+}
+
+.event_sec {
+  @apply flex flex-col gap-y-2
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f6f7f8;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-500 rounded-md
+ 
+}
