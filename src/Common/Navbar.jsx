@@ -29,6 +29,7 @@ const Navbar = () => {
           }
         })
         .catch((e) => {
+          console.log(e);
           toast.error("Something went wrong!");
           setLoading(false);
         });
