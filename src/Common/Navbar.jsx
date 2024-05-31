@@ -17,7 +17,7 @@ const Navbar = () => {
     onSuccess: async (tokenResponse) => {
       console.log(tokenResponse);
       await axios
-        .post("http://localhost:3000/api/v1/user/login", { accessToken: tokenResponse.code }, { withCredentials: true })
+        .post("https://blackboard-backend-two.vercel.app/api/v1/user/login", { accessToken: tokenResponse.code }, { withCredentials: true })
         .then((response) => {
           if (response.data.success) {
             setUser(response.data.user);
@@ -41,7 +41,7 @@ const Navbar = () => {
 
   const logOut = async () => {
     await axios
-      .get("http://localhost:3000/api/v1/user/logout", { withCredentials: true })
+      .get("https://blackboard-backend-two.vercel.app/api/v1/user/logout", { withCredentials: true })
       .then((res) => {
         if (res.data.success) {
           toast.success(res.data.message);

@@ -21,7 +21,7 @@ const CreateEvent = ({ date, setModal }) => {
     };
 
     await axios
-      .post("http://localhost:3000/api/v1/event/create", data, { withCredentials: true })
+      .post("https://blackboard-backend-two.vercel.app/api/v1/event/create", data, { withCredentials: true })
       .then((res) => {
         if (res.data.success) {
           toast.success(res.data.message);

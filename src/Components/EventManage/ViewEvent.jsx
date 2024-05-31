@@ -22,7 +22,7 @@ const ViewEvent = ({ event, setModal, date }) => {
     };
 
     await axios
-      .post("http://localhost:3000/api/v1/event/update", data, { withCredentials: true })
+      .post("https://blackboard-backend-two.vercel.app/api/v1/event/update", data, { withCredentials: true })
       .then((res) => {
         if (res.data.success) {
           toast.success(res.data.message);
@@ -42,7 +42,7 @@ const ViewEvent = ({ event, setModal, date }) => {
     setLoading(true);
 
     await axios
-      .post("http://localhost:3000/api/v1/event/delete", { id: event._id }, { withCredentials: true })
+      .post("https://blackboard-backend-two.vercel.app/api/v1/event/delete", { id: event._id }, { withCredentials: true })
       .then((res) => {
         if (res.data.success) {
           toast.success(res.data.message);

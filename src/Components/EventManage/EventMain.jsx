@@ -30,7 +30,7 @@ const EventMain = ({ date }) => {
     setLoading(true);
 
     await axios
-      .post("http://localhost:3000/api/v1/event/getevents", { Udate }, { withCredentials: true })
+      .post("https://blackboard-backend-two.vercel.app/api/v1/event/getevents", { Udate }, { withCredentials: true })
       .then((res) => {
         if (res.data.success) {
           setEvents(res.data.events);
