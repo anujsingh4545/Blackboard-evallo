@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../Common/Firebase";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -14,44 +13,31 @@ const Navbar = () => {
   const userLoad = useRecoilValue(userLoading);
   const [user, setUser] = useRecoilState(userAtom);
 
-  const SocailLogin = async () => {
-    setLoading(true);
-    let provider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        const user = result.user;
-
-        if (user) {
-          const userData = {
-            name: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-          };
-
-          await axios
-            .post("http://localhost:3000/api/v1/user/login", userData, { withCredentials: true })
-            .then((response) => {
-              console.log(response.data);
-              if (response.data.success) {
-                setUser(response.data.user);
-                setLoading(false);
-                toast.success(response.data.message);
-              } else {
-                toast.error(response.data.message);
-                setLoading(false);
-              }
-            })
-            .catch((e) => {
-              toast.error("Something went wrong!");
-              setLoading(false);
-            });
-        }
-      })
-      .catch((e) => {
-        setLoading(false);
-      });
-  };
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      console.log(tokenResponse);
+      await axios
+        .post("http://localhost:3000/api/v1/user/login", { accessToken: tokenResponse.code }, { withCredentials: true })
+        .then((response) => {
+          if (response.data.success) {
+            setUser(response.data.user);
+            setLoading(false);
+            toast.success(response.data.message);
+          } else {
+            toast.error(response.data.message);
+            setLoading(false);
+          }
+        })
+        .catch((e) => {
+          toast.error("Something went wrong!");
+          setLoading(false);
+        });
+    },
+    flow: "auth-code",
+    access_type: "offline", // Request offline access
+    prompt: "consent",
+    scope: "openid email profile https://www.googleapis.com/auth/calendar",
+  });
 
   const logOut = async () => {
     await axios
@@ -102,7 +88,14 @@ const Navbar = () => {
             ) : (
               <>
                 <button> Login </button>
-                <section className=" p-2 bg-black text-white rounded-full cursor-pointer " onClick={SocailLogin}>
+
+                <section
+                  className=" p-2 bg-black text-white rounded-full cursor-pointer "
+                  onClick={() => {
+                    setLoading(true);
+                    login();
+                  }}
+                >
                   <AiOutlineLogin size={15} />
                 </section>
               </>
